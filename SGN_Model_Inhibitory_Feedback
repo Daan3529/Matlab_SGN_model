@@ -1,0 +1,26 @@
+%% In this function, the differential equations + parametervalues are definend
+function dydt = odefun(t,y)
+mRNA = y(1);
+P = y(2); % bèta-galactosidase
+P_mat = y(3); % matured bèta-galactosidase
+TsR = y(4); % transcription resources
+TlR = y(5); % translation resources
+
+kts = 18.2; %nanomolar per minute
+ktl = 16.1; %nanomolar per minute
+kcs = 1.1e-2; % per minute
+deltamRNA = 7.8e-4; %per minute 
+deltaTlr = 4.5e-3; %per minute
+kmat = 0.2;%per minute
+Ks = 8.5;% nanomolar
+Kl = 65.8; %nanomolar
+Ktlr = 6e-5; %
+DNA = 3.4;
+
+dmRNA = (kts * TsR * DNA)/(Ks + DNA + P_mat) - (deltamRNA * mRNA) ;
+dP = (ktl * TlR * mRNA)/(Kl + mRNA) - (kmat * P);
+dP_mat = kmat * P;
+dTsR = -(kcs * TsR * DNA)/(Ks + DNA);
+dTlR = -(deltaTlr * TlR) /(Ktlr + TlR);
+dydt = [dmRNA;dP;dP_mat;dTsR;dTlR];
+end
